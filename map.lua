@@ -1,5 +1,5 @@
 function makeMap(name)
-	m = {}
+	local m = {}
 	m.name = name
 	for i=0,worldX do
 		m[i] = {}

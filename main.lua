@@ -3,7 +3,8 @@ require("obj")
 require("map")
 
 function love.load()
-	love.graphics.setBackgroundColor(.1, .05, .2)	
+	--love.graphics.setBackgroundColor(.1, .05, .2)	
+	love.graphics.setBackgroundColor(.5, .5, .5)	
 	worldX = 20
 	worldY = 20
 	gridSize = 16
@@ -23,4 +24,5 @@ end
 
 function love.draw()
 	drawMap()	
+	--wholeMap()
 end

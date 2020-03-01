@@ -1,28 +1,28 @@
 function makeMob(curMap, x, y)
-	obj = makeObj(curMap, x, y, 0, 1, 0)
-	if obj ~= nil then
+	if curMap[x][y] == nil then
+		local obj = makeObj(curMap, x, y, 0, 1, 0)
 		obj.inertiaTimer = 0
 		obj.inertia = 10
 		obj.acceleration = 1
+		return obj
+	else
+		return nil
 	end
-	return obj
 end
 
 function makeObj(curMap, x, y, r, g, b)
 	if curMap[x][y] == nil then
-		obj = {}
+		local obj = {}
 		obj.x = x
 		obj.y = y
 		curMap[obj.x][obj.y] = obj
 		obj.r = r
 		obj.g = g
 		obj.b = b
+		return obj
+	else
+		return nil
 	end
-	return obj
-end
-
-function love.update()
-	input()
 end
 
 function move(obj, curMap,  x, y)
