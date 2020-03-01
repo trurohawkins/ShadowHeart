@@ -1,6 +1,7 @@
+
 function makeMob(curMap, x, y)
 	if curMap[x][y] == nil then
-		local obj = makeObj(curMap, x, y, 0, 1, 0)
+		local obj = makeObj(curMap, x, y, 1, 1, 1)
 		obj.inertiaTimer = 0
 		obj.inertia = 10
 		obj.acceleration = 1
@@ -32,6 +33,9 @@ function move(obj, curMap,  x, y)
 			newY = obj.y + y
 			if newY >= 0 and newY <= worldY then
 				if newX >= 0 and newX <= worldX then
+						if obj.anim ~= nil then
+							obj.anim.animate()
+						end
 					if curMap[newX][newY] == nil then
 						curMap[obj.x][obj.y] = nil
 						obj.x = newX

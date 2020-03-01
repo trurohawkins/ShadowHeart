@@ -14,8 +14,8 @@ function makeChar(image, px, py, oxb, oxe, oyb, oye)
 	end
 	function char.move(mx, my)
 		for i=0,char.count-1 do
-			char[i].x = char[i].x + mx
-			char[i].y = char[i].y + my
+			char[i].move(mx, my)--.x = char[i].x + mx
+			char[i].move(mx, my)-- = char[i].y + my
 		end
 	end
 	end end
@@ -26,19 +26,32 @@ function makeAnim(img, size, frames, x, y, ox, oy)
 	local anim = {}
 	anim.x = x
 	anim.y = y
-	anim.speed = 20
+	anim.speed = 5
+	anim.st = 0
 	anim.frame = 0
 	anim.size = size
 	for i=0, frames-1 do
 		anim[i] = love.graphics.newQuad(ox + size * i, oy, 16, 16, img:getDimensions())
 	end
 	function anim.animate()
-		if time % anim.speed == 0 then
+		anim.st = anim.st + 1
+		if anim.st % anim.speed == 0 then
 			anim.frame = (anim.frame + 1) % 2
 		end
 	end
 	function anim.draw()
 		love.graphics.draw(img, anim[anim.frame], anim.x, anim.y)
+	end
+	function anim.draw(x, y)
+		love.graphics.draw(img, anim[anim.frame], x, y)
+	end
+	function anim.move(mx, my)
+		anim.x = anim.x + mx
+		anim.y = anim.y + my
+	end
+	function anim.place(mx, my)
+		anim.x = mx
+		anim.y = my
 	end
 	return anim
 

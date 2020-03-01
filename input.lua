@@ -27,6 +27,8 @@ function love.keypressed(key)
 		print(p.y)
 		print(sP.x)
 		print(sP.y)
+	elseif key == "s" or key == "a" or key == "d" or key == "w" then
+		--if p.anim then p.anim.animate() end
 	end
 end
 
