@@ -5,7 +5,7 @@ require("anim")
 
 function love.load()
 	--love.graphics.setBackgroundColor(.1, .05, .2)	
-	love.graphics.setBackgroundColor(.5, .5, .5)	
+	love.graphics.setBackgroundColor(0, 0, 0, 0)	
 	worldX = 20
 	worldY = 20
 	gridSize = 16

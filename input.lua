@@ -1,5 +1,6 @@
 
 function input(player, curMap)
+	if player ~= nil then
 	if love.keyboard.isDown("w") then
 		move(player, curMap, 0, -1)
 	end
@@ -12,7 +13,7 @@ function input(player, curMap)
 	if love.keyboard.isDown("d") then
 		move(player, curMap, 1, 0)
 	end
-
+	end
 end
 
 function love.keypressed(key)

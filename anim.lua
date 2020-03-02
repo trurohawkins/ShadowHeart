@@ -30,6 +30,8 @@ function makeAnim(img, size, frames, x, y, ox, oy)
 	anim.st = 0
 	anim.frame = 0
 	anim.size = size
+	anim.sx = 1
+	anim.ox = 0
 	for i=0, frames-1 do
 		anim[i] = love.graphics.newQuad(ox + size * i, oy, 16, 16, img:getDimensions())
 	end
@@ -40,10 +42,18 @@ function makeAnim(img, size, frames, x, y, ox, oy)
 		end
 	end
 	function anim.draw()
-		love.graphics.draw(img, anim[anim.frame], anim.x, anim.y)
+		love.graphics.draw(img, anim[anim.frame], anim.x, anim.y, 1, 1)
 	end
 	function anim.draw(x, y)
-		love.graphics.draw(img, anim[anim.frame], x, y)
+		if x < anim.x then 
+			anim.sx = -1 
+			anim.ox = 16	
+		elseif x > anim.x then 
+			anim.sx = 1 
+			anim.ox = 0
+		end
+		anim.place(x, y)
+		love.graphics.draw(img, anim[anim.frame], x, y, 0, anim.sx, 1, anim.ox, 0)
 	end
 	function anim.move(mx, my)
 		anim.x = anim.x + mx
