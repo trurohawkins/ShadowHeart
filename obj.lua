@@ -1,7 +1,7 @@
 
 function makeMob(curMap, x, y)
 	if curMap[x][y] == nil then
-		local obj = makeObj(curMap, x, y, 1, 1, 1)
+		local obj = makeObj(curMap, x, y, .5, .1, .4)
 		obj.inertiaTimer = 0
 		obj.inertia = 20
 		obj.acceleration = 1
