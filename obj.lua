@@ -31,8 +31,8 @@ function move(obj, curMap,  x, y)
 		if obj.inertia == obj.inertiaTimer then
 			newX = obj.x + x
 			newY = obj.y + y
-			if newY >= 0 and newY <= worldY then
-				if newX >= 0 and newX <= worldX then
+			if newY > 0 and newY <= worldY then
+				if newX > 0 and newX <= worldX then
 						if obj.anim ~= nil then
 							obj.anim.animate()
 						end

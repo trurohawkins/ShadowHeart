@@ -31,10 +31,14 @@ function makeAnim(img, size, frames, x, y, ox, oy)
 	anim.frame = 0
 	anim.frames = frames
 	anim.size = size
-	anim.sx = 1
-	anim.ox = 0
+	anim.s = gridSize / size
+	anim.sy = -anim.s
+	anim.sx = anim.s
+	anim.oy = size/2
+	anim.ox = size/2
+	anim.r = 3.14159
 	for i=0, frames-1 do
-		anim[i] = love.graphics.newQuad(ox + size * i, oy, 8, 8, img:getDimensions())
+		anim[i] = love.graphics.newQuad(ox + size * i, oy, 8, 8, 8, 8)
 	end
 	function anim.animate()
 		anim.st = anim.st + 1
@@ -43,18 +47,37 @@ function makeAnim(img, size, frames, x, y, ox, oy)
 		end
 	end
 	function anim.draw()
-		love.graphics.draw(img, anim[anim.frame], anim.x, anim.y, 0, 10, 10, 0, 0, 0 ,0)
+		love.graphics.draw(img, anim[anim.frame], anim.x, anim.y, 0, 10, 10)
 	end
 	function anim.draw(x, y)
-		if x < anim.x then 
-			anim.sx = 1 
+
+--[[		if x < anim.x then 
+			anim.sx = anim.s
 			anim.ox = 8	
 		elseif x > anim.x then 
-			anim.sx = -1 
+			anim.sx = -anim.s
 			anim.ox = 0
 		end
+		if y < anim.y then 
+			anim.sy = -anim.s
+			anim.oy = 8	
+		elseif y > anim.y then 
+			anim.sy = anim.s
+			anim.oy = 0
+		end]]--
+		if x > anim.x then
+			 anim.r = 3.14159
+			 anim.sy = -anim.s
+		elseif y < anim.y then
+			 anim.r = 1.5708
+		elseif y > anim.y then
+			 anim.r = 4.71239
+		elseif x < anim.x then
+			 anim.r = 0
+			 anim.sy = anim.s
+		end
 		anim.place(x, y)
-		love.graphics.draw(img, anim[anim.frame], x, y, 0, anim.sx, 1, anim.ox, 0)
+		love.graphics.draw(img, anim[anim.frame], x, y, anim.r, anim.sx, anim.sy, anim.ox, anim.oy)
 	end
 	function anim.move(mx, my)
 		anim.x = anim.x + mx

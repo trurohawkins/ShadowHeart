@@ -2,10 +2,10 @@ function makeMap(name)
 	local m = {}
 	m.floor = {}
 	m.name = name
-	for i=0,worldX do
+	for i=1,worldX do
 		m[i] = {}
 		m.floor[i] = {}
-		for j=0,worldY do
+		for j=1,worldY do
 			m[i][j] = nil
 			m.floor[i][j] = nil
 		end
@@ -18,15 +18,33 @@ function makeMap(name)
 	return m
 end
 
+function makeScreen(x, y)
+	local s = {}
+	s.x = s
+	s.y = y
+	for i=1,x do
+		s[i] = {}
+		for j=1,y do
+			s[i][j] = nil
+		end
+	end
+
+	return s
+end
+
 
 function ray(curMap, player, dirX, dirY, dist)
 	for i=0,dist do
 		local x = math.floor(player.x + (dirX * i))
 		local y = math.floor(player.y + (dirY * i))
 		
-		if x >= 0 and x <= worldX and y >= 0 and y <= worldY then
+		if x > 0 and x <= worldX
+		 and y > 0 and y <= worldY then
 			obj = curMap[x][y]
 			fObj = curMap.floor[x][y]
+			x = math.floor(x - ((p.x + sP.x)/2 - scrWid/2))
+			y = math.floor(y - ((p.y + sP.y)/2 - scrHei/2))
+			if x > 0 and x <= scrWid and y > 0 and y <= scrHei then
 			local info = {}
 			local flInfo = {}
 			if mainScr[x][y] ~= nil then info = mainScr[x][y] else mainScr[x][y] = info end
@@ -41,7 +59,7 @@ function ray(curMap, player, dirX, dirY, dist)
 				mInfo(flInfo, fObj, al, 0)
 				mInfo(info, obj, al, 0)
 			end
-
+			end
 			if obj ~= nil and obj ~= player then break end
 		end
 	end
@@ -49,20 +67,27 @@ end
 
 function mInfo(info, obj, al, r)
 	if obj ~= nil then
-		if r == 1 then
-			if info.r == nil then
+		if r == 1 then--
+			if info.r == nil then--
 				info.r = obj.r
-				if info.b ~= nil then info.g = obj.g end
+				--if info.b ~= nil then info.g = obj.g end
 			end
 		else
 			if info.b == nil then
 				info.b = obj.b
-				if info.r ~= nil then info.g = obj.g end
+				--if info.r ~= nil then info.g = obj.g end
+			end--
+		end--
+		if obj ~= p and obj ~= sP then info.g = obj.g end
+		
+		if obj.anim ~= nil then 
+			if info.an == nil then--
+				info.an = obj.anim 
+			else
+				info.an.an = obj.anim
 			end
 		end
-		if obj.anim ~= nil then info.an = obj.anim end
 	end
-	-- maybe needs to be in above if
 	if info.a ~= nil then
 		info.a = info.a + al 
 	else
@@ -86,21 +111,33 @@ function drawSquare(x, y, r, g, b, alpha)
 end
 
 function drawScreen(curScr)
-	for i=0,worldX do
-		for j=0,worldY do
+	for i=1,scrWid do
+		for j=1,scrHei do
 			local pix = curScr[i][j]
 			if pix ~= nil then
 				if pix.r ~= nil then r = pix.r else r = 0 end
 				if pix.g ~= nil then g = pix.g else g = 0 end
 				if pix.b ~= nil then b = pix.b else b = 0 end
 				if pix.a ~= nil then a = pix.a else a = 0 end
---				love.graphics.setColor(r, g, b, a)
-				local x = ((love.graphics.getWidth() / 2) - ((worldX/2) * gridSize)) + (i * gridSize)
-				local y = ((love.graphics.getHeight() / 2) - ((worldY/2) * gridSize)) + (j * gridSize)
+	--			local x = love.graphics.getWidth() / 2 + ((i - ((p.x + sP.x) / 2)) * gridSize)
+	--			local y = love.graphics.getHeight() / 2 + ((j - ((p.y + sP.y) / 2)) * gridSize)
+			--x = x - (player.x - scrWid/2)
+			--y = y - (player.y - scrHei/2)
+			--	local x = love.graphics.getWidth() / 2 + ((i - (p.x)) * gridSize)
+			--	local y = love.graphics.getHeight() / 2 + ((j - p.y) * gridSize)
+			local x = love.graphics.getWidth() / 2 + (i -1- scrWid/2) * gridSize
+			local y = love.graphics.getHeight() / 2 + (j -1- scrHei/2) * gridSize
+				if pix.an ~= nil then
+					if pix.an.an ~= nil then
+						pix.a = pix.a / 2
+					end end
 					love.graphics.setColor(r, g, b, a)
-				--love.graphics.rectangle("fill", x, y, gridSize, gridSize)
 				if pix.an ~= nil then
 					pix.an.draw(x, y)
+					if pix.an.an ~= nil then
+						pix.an.an.draw(x, y)
+					end
+	
 				end
 			end
 		end
@@ -108,18 +145,18 @@ function drawScreen(curScr)
 end
 
 function drawMap()
-	mainScr = makeMap( )
-	floorScr = makeMap ( )
+	mainScr = makeScreen(scrWid, scrHei)--makeMap( )
+	floorScr = makeScreen(scrWid, scrHei)--makeMap ( )
 
 	for i=0,6.2,.1 do
 		x = (math.cos(i))
 		y = (math.sin(i))
 			if sMap ~= nil and sP ~= nil then
-				ray(sMap, sP, x, y, 10)
+				ray(sMap, sP, x, y, 100)
 				--ray(sMap.floor, floorScr, sP, x, y, 100)
 			end
 			if map ~= nil and p ~= nil then
-				ray(map, p, x, y, 10)
+				ray(map, p, x, y, 100)
 --				ray(map.floor, floorScr, p, x, y, 100)
 			end
 	end
@@ -128,8 +165,8 @@ function drawMap()
 end
 
 function wholeMap()
-	for i=0,worldX do
-		for j=0,worldY do
+	for i=1,worldX do
+		for j=1,worldY do
 			local alpha = 1
 			local obj = map[i][j]
 			if obj == nil then 
@@ -154,8 +191,8 @@ end
 
 function fillMap(curMap)
 	bushImg = love.graphics.newImage("sprites/bush.png")
-	for i=0,worldX do
-		for j=0,worldY do
+	for i=1,worldX do
+		for j=1,worldY do
 			if love.math.random() > 0.9 then
 			--makeObj(curMap, i, j, .45, .45, .45)
 				local o = makeObj(curMap, i, j, .1, .5, .3)
@@ -168,11 +205,11 @@ end
 
 function makeFloor()
 	grassImg = love.graphics.newImage("sprites/grass.png")
-	for i=0,worldX do
-		for j=0,worldY do
-			local o = makeObj(map.floor, i, j, .3, .9, .2)	
+	for i=1,worldX do
+		for j=1,worldY do
+			local o = makeObj(map.floor, i, j, .3, .7, .1)	
 			if o ~= nil then o.anim = makeAnim(grassImg, 8, 1, i, j, 0, 0) end
-			sMap.floor[i][j] = o
+			if sMap ~= nil then sMap.floor[i][j] = o end
 		end
 	end
 end
