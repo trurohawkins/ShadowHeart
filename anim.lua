@@ -64,7 +64,7 @@ function makeAnim(img, size, frames, x, y, ox, oy)
 		elseif y > anim.y then 
 			anim.sy = anim.s
 			anim.oy = 0
-		end]]--
+		end
 		if x > anim.x then
 			 anim.r = 3.14159
 			 anim.sy = -anim.s
@@ -75,7 +75,7 @@ function makeAnim(img, size, frames, x, y, ox, oy)
 		elseif x < anim.x then
 			 anim.r = 0
 			 anim.sy = anim.s
-		end
+		end]]--
 		anim.place(x, y)
 		love.graphics.draw(img, anim[anim.frame], x, y, anim.r, anim.sx, anim.sy, anim.ox, anim.oy)
 	end

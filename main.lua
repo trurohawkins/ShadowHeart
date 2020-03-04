@@ -9,16 +9,16 @@ function love.load()
 	love.graphics.setBackgroundColor(0, 0, 0, 0)	
 	scrWid = 30
 	scrHei = 30
-	worldX = 30
-	worldY = 30
+	worldX = 50
+	worldY = 50
 	gridSize = 16
 	map = makeMap("light")
-	p = makeMob(map, 1, worldY/2)
+	p = makeMob(map, worldX/2, worldY/2)
 	spriSheet = love.graphics.newImage("sprites/player.png")
 	p.anim = makeAnim(spriSheet, 8, 1, p.x, p.y, 0, 0)
   fillMap(map)
 	sMap = makeMap("dark")
-	sP = makeMob(sMap, worldX, worldY/2)
+	sP = makeMob(sMap, worldX/2, worldY/2)
 	sP.anim = makeAnim(spriSheet, 8, 1, p.x, p.y, 0, 0)
 	fillMap(sMap)
 	makeFloor()
